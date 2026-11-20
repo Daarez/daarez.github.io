@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Даариец / Daarez — AI Producer & Interactive Web Developer</title>
+    <style>
+        :root {
+            --bg-main: #0b0f17;
+            --bg-card: #131a26;
+            --bg-card-hover: #182232;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-accent: rgba(56, 189, 248, 0.35);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-amber: #f59e0b;
+            --accent-emerald: #10b981;
+            --gradient-glow: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.12) 0%, rgba(11, 15, 23, 0) 65%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-main);
+            background-image: var(--gradient-glow);
+            background-repeat: no-repeat;
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header & Language Switcher */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 28px 0;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            box-shadow: 0 0 12px var(--accent-blue);
+        }
+
+        .lang-switcher {
+            display: flex;
+            background: var(--bg-card);
+            padding: 4px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .lang-btn.active {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-blue);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 72px 0 56px;
+            max-width: 780px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            color: var(--accent-emerald);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+
+        .status-pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-emerald);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+            70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        h1 {
+            font-size: clamp(2rem, 4.5vw, 3.1rem);
+            line-height: 1.18;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .highlight {
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 1.12rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 680px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 24px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--accent-blue);
+            color: #0b0f17;
+            border: none;
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: #7dd3fc;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-copied {
+            border-color: var(--accent-emerald) !important;
+            color: var(--accent-emerald) !important;
+            background: rgba(16, 185, 129, 0.1) !important;
+        }
+
+        /* Section Titles */
+        .section {
+            padding: 48px 0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            font-size: 0.98rem;
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-accent);
+            transform: translateY(-3px);
+        }
+
+        .card-tag {
+            display: inline-block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            width: fit-content;
+        }
+
+        .tag-web {
+            background: rgba(56, 189, 248, 0.12);
+            color: var(--accent-blue);
+        }
+
+        .tag-ai {
+            background: rgba(245, 158, 11, 0.12);
+            color: var(--accent-amber);
+        }
+
+        .card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        .roadmap-note {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid var(--accent-amber);
+            padding: 10px 14px;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 22px;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .tech-tag {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.04);
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.92rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .card-link:hover {
+            background: var(--accent-blue);
+            color: #0b0f17;
+            border-color: var(--accent-blue);
+        }
+
+        .card-link.amber:hover {
+            background: var(--accent-amber);
+            color: #0b0f17;
+            border-color: var(--accent-amber);
+        }
+
+        /* Competencies */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-box {
+            background: rgba(19, 26, 38, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .skill-box h4 {
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .skill-box p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Contact & Footer */
+        .contact-panel {
+            background: linear-gradient(135deg, #131a26 0%, #192334 100%);
+            border: 1px solid var(--border-accent);
+            border-radius: 18px;
+            padding: 36px;
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .contact-panel h2 {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+
+        .contact-panel p {
+            color: var(--text-secondary);
+            max-width: 560px;
+            margin: 0 auto 24px;
+        }
+
+        .contact-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0 32px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 56px;
+        }
+
+        @media (max-width: 600px) {
+            .hero { padding: 48px 0 36px; }
+            .contact-panel { padding: 26px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="brand">
+            <span class="brand-dot"></span>
+            <span id="brand-name">Даариец</span>
+        </div>
+        <div class="lang-switcher" role="group" aria-label="Language switcher">
+            <button class="lang-btn active" onclick="setLang('ru')">RU</button>
+            <button class="lang-btn" onclick="setLang('ua')">UA</button>
+            <button class="lang-btn" onclick="setLang('pl')">PL</button>
+            <button class="lang-btn" onclick="setLang('en')">EN</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="status-badge">
+                <span class="status-pulse"></span>
+                <span data-i18n="status">Открыт к проектным задачам и сотрудничеству</span>
+            </div>
+            <h1 data-i18n="heroTitle">Создаю <span class="highlight">интерактивные веб-приложения</span> и генеративный 3D-контент</h1>
+            <p class="hero-desc" data-i18n="heroDesc">
+                Соединяю системный инженерный подход с современными AI-инструментами. Разрабатываю автономные веб-инструменты, интерактивные карты и 3D-анимационные проекты со сквозными персонажами под ключ.
+            </p>
+            <div class="hero-actions">
+                <a href="#projects" class="btn btn-primary" data-i18n="btnProjects">Смотреть проекты</a>
+                <a href="#contact" class="btn btn-secondary" data-i18n="btnContact">Обсудить задачу</a>
+            </div>
+        </section>
+
+        <section id="projects" class="section">
+            <h2 class="section-title" data-i18n="projectsTitle">Реализованные проекты</h2>
+            <p class="section-subtitle" data-i18n="projectsSubtitle">Живые примеры того, как идеи превращаются в работающие цифровые продукты</p>
+
+            <div class="projects-grid">
+                <!-- Project 1: Historical Atlas -->
+                <article class="card">
+                    <div>
+                        <span class="card-tag tag-web" data-i18n="p1Tag">Интерактивный веб и данные</span>
+                        <h3 data-i18n="p1Title">Интерактивный исторический атлас</h3>
+                        <p data-i18n="p1Desc">
+                            Веб-приложение для визуализации исторических эпох. Двойные синхронизированные карты (Leaflet.js), навигация по временной шкале, фильтрация сканов, исторические паспорта регионов и полная адаптация под мобильные и десктопные экраны.
+                        </p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">HTML5 / CSS3 / JS</span>
+                            <span class="tech-tag">Leaflet.js</span>
+                            <span class="tech-tag">UX / UI</span>
+                            <span class="tech-tag">Multi-language</span>
+                        </div>
+                    </div>
+                    <a href="https://daarez.github.io/atlas/" target="_blank" rel="noopener" class="card-link" data-i18n="p1Link">
+                        Открыть приложение →
+                    </a>
+                </article>
+
+                <!-- Project 2: Detective Emilka -->
+                <article class="card">
+                    <div>
+                        <span class="card-tag tag-ai" data-i18n="p2Tag">AI-продакшн и геймдев</span>
+                        <h3 data-i18n="p2Title">Детектив Эмилька (Интерактивная 3D-игра)</h3>
+                        <p data-i18n="p2Desc">
+                            Выборно-сюжетная 3D-игра с ветвящимся повествованием в эстетике Pixar/Disney. Отлаженный пайплайн сохранения консистентности оригинальных персонажей (Эмилька, Оскар, Ханя, Гриша, Педро) в разных сценах и динамике.
+                        </p>
+                        <div class="roadmap-note" data-i18n="p2Roadmap">
+                            <strong>Статус:</strong> Доступна демо-версия (Эпизоды 1–2). Эпизод 3 в активной подготовке, далее запланированы 4 и 5 части.
+                        </div>
+                        <div class="tech-tags">
+                            <span class="tech-tag">AI Video & 3D Style</span>
+                            <span class="tech-tag">Character Consistency</span>
+                            <span class="tech-tag">Interactive Narrative</span>
+                        </div>
+                    </div>
+                    <a href="https://relaxed-puppy-dcdf49.netlify.app/" target="_blank" rel="noopener" class="card-link amber" data-i18n="p2Link">
+                        Запустить демо-версию →
+                    </a>
+                </article>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title" data-i18n="skillsTitle">Чем я могу быть полезен</h2>
+            <p class="section-subtitle" data-i18n="skillsSubtitle">Практические решения для бизнеса, студий и медиапроектов</p>
+
+            <div class="skills-grid">
+                <div class="skill-box">
+                    <h4 data-i18n="s1Title">Быстрые веб-прототипы и MVP</h4>
+                    <p data-i18n="s1Desc">Сборка интерактивных калькуляторов, каталогов, карт и лендингов без раздутых бюджетов и долгих согласований.</p>
+                </div>
+                <div class="skill-box">
+                    <h4 data-i18n="s2Title">AI-видео и 3D-персонажи</h4>
+                    <p data-i18n="s2Desc">Создание рекламных роликов, тизеров и историй, где герои сохраняют единую внешность и стиль от кадра к кадру.</p>
+                </div>
+                <div class="skill-box">
+                    <h4 data-i18n="s3Title">Автоматизация и ИИ-логика</h4>
+                    <p data-i18n="s3Desc">Перевод сложных технических регламентов и бизнес-процессов в понятные алгоритмы, боты и базы знаний.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <div class="contact-panel">
+                <h2 data-i18n="contactTitle">Есть идея или задача? Напишите мне</h2>
+                <p data-i18n="contactDesc">
+                    Обсудим ваш проект, сроки и формат работы. Отвечаю быстро, говорю на русском, украинском и польском языках (а с англоязычными задачами помогает отлаженный AI-пайплайн).
+                </p>
+                <div class="contact-buttons">
+                    <a href="https://t.me/daars1" target="_blank" rel="noopener" class="btn btn-primary">
+                        Telegram: @daars1
+                    </a>
+                    <button type="button" id="email-btn" onclick="copyEmail()" class="btn btn-secondary">
+                        Email: daarez.dev@gmail.com
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 <span id="footer-brand">Даариец</span>. <span data-i18n="footerNote">Создано с помощью инженерного подхода и AI.</span></p>
+    </footer>
+</div>
+
+<script>
+    let currentLang = 'ru';
+
+    const translations = {
+        ru: {
+            brand: "Даариец",
+            status: "Открыт к проектным задачам и сотрудничеству",
+            heroTitle: 'Создаю <span class="highlight">интерактивные веб-приложения</span> и генеративный 3D-контент',
+            heroDesc: "Соединяю системный инженерный подход с современными AI-инструментами. Разрабатываю автономные веб-инструменты, интерактивные карты и 3D-анимационные проекты со сквозными персонажами под ключ.",
+            btnProjects: "Смотреть проекты",
+            btnContact: "Обсудить задачу",
+            projectsTitle: "Реализованные проекты",
+            projectsSubtitle: "Живые примеры того, как идеи превращаются в работающие цифровые продукты",
+            p1Tag: "Интерактивный веб и данные",
+            p1Title: "Интерактивный исторический атлас",
+            p1Desc: "Веб-приложение для визуализации исторических эпох. Двойные синхронизированные карты (Leaflet.js), навигация по временной шкале, фильтрация сканов, исторические паспорта регионов и полная адаптация под мобильные и десктопные экраны.",
+            p1Link: "Открыть приложение →",
+            p2Tag: "AI-продакшн и геймдев",
+            p2Title: "Детектив Эмилька (Интерактивная 3D-игра)",
+            p2Desc: "Выборно-сюжетная 3D-игра с ветвящимся повествованием в эстетике Pixar/Disney. Отлаженный пайплайн сохранения консистентности оригинальных персонажей (Эмилька, Оскар, Ханя, Гриша, Педро) в разных сценах и динамике.",
+            p2Roadmap: "<strong>Статус:</strong> Доступна демо-версия (Эпизоды 1–2). Эпизод 3 в активной подготовке, далее запланированы 4 и 5 части.",
+            p2Link: "Запустить демо-версию →",
+            skillsTitle: "Чем я могу быть полезен",
+            skillsSubtitle: "Практические решения для бизнеса, студий и медиапроектов",
+            s1Title: "Быстрые веб-прототипы и MVP",
+            s1Desc: "Сборка интерактивных калькуляторов, каталогов, карт и лендингов без раздутых бюджетов и долгих согласований.",
+            s2Title: "AI-видео и 3D-персонажи",
+            s2Desc: "Создание рекламных роликов, тизеров и историй, где герои сохраняют единую внешность и стиль от кадра к кадру.",
+            s3Title: "Автоматизация и ИИ-логика",
+            s3Desc: "Перевод сложных технических регламентов и бизнес-процессов в понятные алгоритмы, боты и базы знаний.",
+            contactTitle: "Есть идея или задача? Напишите мне",
+            contactDesc: "Обсудим ваш проект, сроки и формат работы. Отвечаю быстро, общаюсь на русском, украинском и польском языках.",
+            emailCopied: "✓ Email скопирован!",
+            footerNote: "Создано с помощью инженерного подхода и AI."
+        },
+        ua: {
+            brand: "Даариец",
+            status: "Відкритий до проєктних завдань та співпраці",
+            heroTitle: 'Створюю <span class="highlight">інтерактивні вебдодатки</span> та генеративний 3D-контент',
+            heroDesc: "Поєдную системний інженерний підхід із сучасними AI-інструментами. Розробляю автономні вебінструменти, інтерактивні карти та 3D-анімаційні проєкти зі сталими персонажами під ключ.",
+            btnProjects: "Дивитись проєкти",
+            btnContact: "Обговорити завдання",
+            projectsTitle: "Реалізовані проєкти",
+            projectsSubtitle: "Живі приклади того, як ідеї перетворюються на працюючі цифрові продукти",
+            p1Tag: "Інтерактивний веб та дані",
+            p1Title: "Інтерактивний історичний атлас",
+            p1Desc: "Вебдодаток для візуалізації історичних епох. Подвійні синхронізовані карти (Leaflet.js), навігація за шкалою часу, фільтрація сканів, історичні паспорти регіонів та повна адаптація під мобільні та десктопні екрани.",
+            p1Link: "Відкрити додаток →",
+            p2Tag: "AI-продакшн та геймдев",
+            p2Title: "Детектив Емілька (Інтерактивна 3D-гра)",
+            p2Desc: "Сюжетна 3D-гра з розгалуженим вибором в естетиці Pixar/Disney. Налагоджений пайплайн збереження консистентності оригінальних персонажів (Емілька, Оскар, Ханя, Гриша, Педро) у різних сценах та динаміці.",
+            p2Roadmap: "<strong>Статус:</strong> Доступна демо-версія (Епізоди 1–2). Епізод 3 в активній підготовці, далі заплановані 4 та 5 частини.",
+            p2Link: "Запустити демо-версію →",
+            skillsTitle: "Чим я можу бути корисним",
+            skillsSubtitle: "Практичні рішення для бізнесу, студій та медіапроєктів",
+            s1Title: "Швидкі вебпрототипи та MVP",
+            s1Desc: "Розробка інтерактивних калькуляторів, каталогів, карт і лендінгів без роздутих бюджетів та довгих узгоджень.",
+            s2Title: "AI-відео та 3D-персонажі",
+            s2Desc: "Створення рекламних роликів, тизерів та історій, де герої зберігають єдину зовнішність і стиль від кадру до кадру.",
+            s3Title: "Автоматизація та ШІ-логіка",
+            s3Desc: "Переведення складних технічних регламентів і бізнес-процесів у зрозумілі алгоритми, боти та бази знань.",
+            contactTitle: "Є ідея чи завдання? Напишіть мені",
+            contactDesc: "Обговоримо ваш проєкт, терміни та формат роботи. Відповідаю швидко, спілкуюсь українською, польською та російською мовами.",
+            emailCopied: "✓ Email скопійовано!",
+            footerNote: "Створено за допомогою інженерного підходу та AI."
+        },
+        pl: {
+            brand: "Daarez",
+            status: "Otwarty na zlecenia projektowe i współpracę",
+            heroTitle: 'Tworzę <span class="highlight">interaktywne aplikacje webowe</span> oraz generatywne treści 3D',
+            heroDesc: "Łączę systemowe podejście inżynieryjne z nowoczesnymi narzędziami AI. Projektuję samodzielne narzędzia internetowe, interaktywne mapy oraz animacje 3D ze spójnymi postaciami.",
+            btnProjects: "Zobacz projekty",
+            btnContact: "Omówmy projekt",
+            projectsTitle: "Zrealizowane projekty",
+            projectsSubtitle: "Przykłady pokazujące, jak pomysły stają się działającymi produktami cyfrowymi",
+            p1Tag: "Interaktywny Web i Dane",
+            p1Title: "Interaktywny Atlas Historyczny",
+            p1Desc: "Aplikacja webowa do wizualizacji epok historycznych. Podwójne zsynchronizowane mapy (Leaflet.js), oś czasu, filtrowanie skanów, paszporty historyczne regionów oraz pełna responsywność na urządzenia mobilne i komputery.",
+            p1Link: "Otwórz aplikację →",
+            p2Tag: "Produkcja AI i Gamedev",
+            p2Title: "Detektyw Emilka (Interaktywna gra 3D)",
+            p2Desc: "Fabularna gra 3D z wyborami w estetyce Pixar/Disney. Dopracowany proces zachowania pełnej spójności autorskich postaci (Emilka, Oskar, Hania, Grisza, Pedro) w różnych ujęciach i scenach akcji.",
+            p2Roadmap: "<strong>Status:</strong> Dostępna wersja demo (Odcinki 1–2). Odcinek 3 w przygotowaniu, w planach części 4 i 5.",
+            p2Link: "Uruchom wersję demo →",
+            skillsTitle: "W czym mogę pomóc",
+            skillsSubtitle: "Praktyczne rozwiązania dla firm, studiów kreatywnych i projektów medialnych",
+            s1Title: "Szybkie prototypy webowe i MVP",
+            s1Desc: "Tworzenie interaktywnych kalkulatorów, katalogów, map i stron landing page bez zbędnych kosztów i długiego czasu oczekiwania.",
+            s2Title: "Wideo AI i spójne postacie 3D",
+            s2Desc: "Produkcja spotów reklamowych, zwiastunów i animacji, w których bohaterowie zachowują ten sam wygląd i styl w każdej scenie.",
+            s3Title: "Automatyzacja i logika AI",
+            s3Desc: "Przekładanie złożonych norm technicznych i procesów biznesowych na przejrzyste algorytmy, asystentów i bazy wiedzy.",
+            contactTitle: "Masz pomysł lub zadanie? Napisz do mnie",
+            contactDesc: "Omówimy Twój projekt, terminy oraz formę współpracy. Odpowiadam sprawnie po polsku, ukraińsku i rosyjsku.",
+            emailCopied: "✓ Email skopiowany!",
+            footerNote: "Stworzono z wykorzystaniem podejścia inżynieryjnego i AI."
+        },
+        en: {
+            brand: "Daarez",
+            status: "Available for freelance projects & collaboration",
+            heroTitle: 'Building <span class="highlight">Interactive Web Apps</span> & Generative 3D Content',
+            heroDesc: "Combining a systematic engineering mindset with modern AI workflows. I create standalone web tools, interactive maps, and consistent character-driven 3D animations.",
+            btnProjects: "View Projects",
+            btnContact: "Discuss a Project",
+            projectsTitle: "Featured Projects",
+            projectsSubtitle: "Live examples of turning concepts into functional digital products",
+            p1Tag: "Interactive Web & Data",
+            p1Title: "Interactive Historical World Atlas",
+            p1Desc: "Web application for visualizing historical eras. Features dual synchronized maps (Leaflet.js), timeline navigation, scan filtering, regional historical profiles, and full mobile/desktop responsiveness.",
+            p1Link: "Launch App →",
+            p2Tag: "AI Production & Gamedev",
+            p2Title: "Detective Emilka (Interactive 3D Game)",
+            p2Desc: "Choice-driven 3D narrative game in a Pixar/Disney aesthetic. Built with a dedicated pipeline ensuring strict character consistency (Emilka, Oscar, Hania, Grisha, Pedro) across dynamic scenes.",
+            p2Roadmap: "<strong>Status:</strong> Demo available (Episodes 1–2). Episode 3 in active production, followed by parts 4 and 5.",
+            p2Link: "Play Demo →",
+            skillsTitle: "How I Can Help",
+            skillsSubtitle: "Practical digital solutions for businesses, studios, and media creators",
+            s1Title: "Rapid Web Prototypes & MVP",
+            s1Desc: "Building interactive calculators, catalogs, custom maps, and landing pages quickly and cost-effectively.",
+            s2Title: "AI Video & Consistent 3D Characters",
+            s2Desc: "Producing promo videos, trailers, and animated stories where characters maintain identical visual identity shot after shot.",
+            s3Title: "Process Automation & AI Logic",
+            s3Desc: "Translating complex technical standards and workflows into structured algorithms, smart assistants, and knowledge bases.",
+            contactTitle: "Have an idea or a project? Let's talk",
+            contactDesc: "Let's discuss your goals, timeline, and workflow. Fast response and clear project execution.",
+            emailCopied: "✓ Email copied!",
+            footerNote: "Built with engineering precision and AI."
+        }
+    };
+
+    function setLang(lang) {
+        currentLang = lang;
+        const data = translations[lang];
+        if (!data) return;
+
+        document.getElementById('brand-name').textContent = data.brand;
+        document.getElementById('footer-brand').textContent = data.brand;
+        document.documentElement.lang = lang === 'ua' ? 'uk' : lang;
+
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (data[key]) {
+                el.innerHTML = data[key];
+            }
+        });
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+        });
+    }
+
+    function copyEmail() {
+        const email = 'daarez.dev@gmail.com';
+        const btn = document.getElementById('email-btn');
+        const originalText = 'Email: ' + email;
+
+        navigator.clipboard.writeText(email).then(() => {
+            btn.textContent = translations[currentLang].emailCopied;
+            btn.classList.add('btn-copied');
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.classList.remove('btn-copied');
+            }, 2500);
+        });
+    }
+</script>
+
+</body>
+</html>
